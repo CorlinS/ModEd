@@ -26,6 +26,7 @@ public class BlockCreeperBot extends Block implements ITileEntityProvider{
 		setHardness(2.0F);
 		setResistance(5.0F);
 		setCreativeTab(CreativeTabs.tabMisc);
+		setTextureName("ModEd:creeper_bot");
 	}
 	
 	private void moveForward(TileEntity tileEntity, int spaces) {

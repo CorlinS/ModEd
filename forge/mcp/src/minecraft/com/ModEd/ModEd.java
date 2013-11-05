@@ -1,6 +1,8 @@
 package com.ModEd;
 
 import com.ModEd.CreeperBot.BlockCreeperBot;
+import com.ModEd.CreeperBot.ItemBotHead;
+import com.ModEd.CreeperBot.ItemBotWheel;
 import com.ModEd.CreeperBot.TileEntityCreeperBot;
 
 import net.minecraft.block.Block;
@@ -38,12 +40,16 @@ public class ModEd {
         public static CommonProxy proxy;
         
         public static Block blockCreeperBot;
+        public static Item itemBotWheel;
+        public static Item itemBotHead;
         
         @EventHandler // used in 1.6.2
         //@PreInit    // used in 1.5.2
         public void preInit(FMLPreInitializationEvent event) {
 
         	blockCreeperBot = new BlockCreeperBot(500);
+        	itemBotWheel = new ItemBotWheel(5000);
+        	itemBotHead = new ItemBotHead(5001);
         	
         }
         
@@ -52,12 +58,19 @@ public class ModEd {
         public void load(FMLInitializationEvent event) {
            proxy.registerRenderers();
                 
-		   ItemStack dirtStack = new ItemStack(Block.dirt);
-		   ItemStack diamondsStack = new ItemStack(Item.diamond, 64);
-		
-		   GameRegistry.addShapelessRecipe(diamondsStack, dirtStack, dirtStack);
+           GameRegistry.addRecipe(new ItemStack(itemBotWheel), " x", "xyx", " x",
+        		   'x', new ItemStack(Block.cobblestone), 'y', new ItemStack(Item.ingotIron));
+           
+           GameRegistry.addRecipe(new ItemStack(itemBotHead), "xyx", "yzy", "xyx",
+        		   'x', new ItemStack(Block.leaves), 'y', new ItemStack(Item.ingotIron), 'z', new ItemStack(Item.gunpowder));
+           
+		   GameRegistry.addRecipe(new ItemStack(blockCreeperBot), "x x", " y", "x x",
+			        'x', new ItemStack(itemBotWheel), 'y', new ItemStack(itemBotHead));
 		   
 		   LanguageRegistry.addName(blockCreeperBot, "Creeper Bot");
+		   LanguageRegistry.addName(itemBotWheel, "Bot Wheel");
+		   LanguageRegistry.addName(itemBotHead, "Bot Head");
+		   
 		   GameRegistry.registerBlock(blockCreeperBot, "blockCreeperBot");
            GameRegistry.registerTileEntity(TileEntityCreeperBot.class, "tileEntityCreeperBot");
                 
