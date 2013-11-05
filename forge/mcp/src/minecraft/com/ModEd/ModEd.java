@@ -4,6 +4,7 @@ import com.ModEd.CreeperBot.BlockCreeperBot;
 import com.ModEd.CreeperBot.ItemBotHead;
 import com.ModEd.CreeperBot.ItemBotWheel;
 import com.ModEd.CreeperBot.TileEntityCreeperBot;
+import com.ModEd.ui.GuiHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -23,16 +24,19 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid="modedmodid", name="ModEd", version="0.0.0")
-@NetworkMod(clientSideRequired=true)
+
+@NetworkMod(clientSideRequired=true, serverSideRequired=false, 
+channels={"GenericRandom"}, packetHandler = PacketHandler.class)
 
 public class ModEd {
 
         // The instance of your mod that Forge uses.
-        @Instance(value = "ModEdModID")
+        @Instance(value = "modedmodid")
         public static ModEd instance;
         
         // Says where the client and server 'proxy' code is loaded.
@@ -73,6 +77,10 @@ public class ModEd {
 		   
 		   GameRegistry.registerBlock(blockCreeperBot, "blockCreeperBot");
            GameRegistry.registerTileEntity(TileEntityCreeperBot.class, "tileEntityCreeperBot");
+           
+           //UI setup. 
+           NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
+                
                 
         }
         

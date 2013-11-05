@@ -6,4 +6,7 @@
 *.ear
 
 forge/*
+!forge/mcp/src/minecraft/com/ModEd/CreeperBot/*
+!forge/mcp/src/minecraft/com/ModEd/ui/*
 !forge/mcp/src/minecraft/com/ModEd/*
+!forge/mcp/src/minecraft/assets/moded/*
