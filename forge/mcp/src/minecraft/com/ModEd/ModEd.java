@@ -1,6 +1,7 @@
 package com.ModEd;
 
-import com.ModEd.CreeperBot.ItemCreeperBot;
+import com.ModEd.CreeperBot.BlockCreeperBot;
+import com.ModEd.CreeperBot.TileEntityCreeperBot;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -36,12 +37,14 @@ public class ModEd {
         @SidedProxy(clientSide="com.ModEd.client.ClientProxy", serverSide="com.ModEd.CommonProxy")
         public static CommonProxy proxy;
         
-    	private static ItemCreeperBot itemCreeperBot;
+        public static Block blockCreeperBot;
         
         @EventHandler // used in 1.6.2
         //@PreInit    // used in 1.5.2
         public void preInit(FMLPreInitializationEvent event) {
-        	itemCreeperBot = new ItemCreeperBot(5000);
+
+        	blockCreeperBot = new BlockCreeperBot(500);
+        	
         }
         
         @EventHandler // used in 1.6.2
@@ -54,7 +57,9 @@ public class ModEd {
 		
 		   GameRegistry.addShapelessRecipe(diamondsStack, dirtStack, dirtStack);
 		   
-		   LanguageRegistry.addName(itemCreeperBot, "Creeper Bot");
+		   LanguageRegistry.addName(blockCreeperBot, "Creeper Bot");
+		   GameRegistry.registerBlock(blockCreeperBot, "blockCreeperBot");
+           GameRegistry.registerTileEntity(TileEntityCreeperBot.class, "tileEntityCreeperBot");
                 
         }
         
