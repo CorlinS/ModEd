@@ -9,13 +9,18 @@ import java.util.concurrent.TimeUnit;
 import com.ModEd.ModEd;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraft.entity.monster.*;
+
 
 public class TileEntityCreeperBot extends TileEntity {
 
@@ -48,20 +53,89 @@ public class TileEntityCreeperBot extends TileEntity {
 				    }
 				    
 					public void run() {
-						move(command);	
-				      /* Do something… */
+						System.out.println("running command: " + command);
+						switch (command) {
+							case 1:
+								move(1);
+								break;
+							case 2:
+								move(-1);
+								break;
+							case 3:
+								turnRight();
+								break;
+							case 4:
+								turnLeft();
+								break;
+						}
 				    }
 				  }.init(commands.get(0));
 				  
 	  
-			  worker.schedule(task, 300, TimeUnit.MILLISECONDS);
+			  worker.schedule(task, 500, TimeUnit.MILLISECONDS);
 			  commands.remove(0);
+		} else {
+	
+//			EntityIronGolem asdf = new EntityIronGolem(this.worldObj);
+//	        
+//			Explosion boom = this.worldObj.createExplosion(asdf, (double)this.xCoord, 
+//					(double)this.yCoord, (double)this.zCoord, (float)(1), true);
+//			boom.doExplosionA();
 		}
-			  
+		  
 	}
+	
+	
 
+	public void turnRight()
+	{
+		System.out.println("turning right " + this.direction);
+		 switch (direction) {
+	         case 2 :
+	        	 	direction = 4;
+	                 break;
+	         case 3 :
+	        	 	direction = 5;
+	                 break;
+	         case 4 :
+	        	 	direction = 3;
+	                 break;
+	         case 5 :
+	        	 	direction = 2;
+	                 break;
+		 }
+		 
+		this.runCommand();
+	}
+	
+	
+
+	public void turnLeft()
+	{
+		System.out.println("turnign left " + this.direction);
+		switch (direction) {
+		   case 2 :
+			   direction = 5;
+               break;
+
+	       case 3 :
+	    	   direction = 4;
+	               break;
+	
+	       case 4 :
+	    	   direction = 2;
+	               break;
+	
+	       case 5 :
+	    	   direction = 3;
+	               break;
+		 }
+		this.runCommand();
+	}
+	
 	public boolean move(int i)
 	{
+		System.out.println("moving " + i);
 		int j = xCoord;
 		int k = yCoord;
 		int l = zCoord;
