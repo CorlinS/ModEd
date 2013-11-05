@@ -7,3 +7,4 @@
 
 forge/*
 !forge/mcp/src/minecraft/com/ModEd/*
+!forge/mcp/src/minecraft/assets/moded/*
