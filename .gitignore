@@ -4,3 +4,6 @@
 *.jar
 *.war
 *.ear
+
+forge/*
+!forge/mcp/src/minecraft/com/ModEd/*
