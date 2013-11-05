@@ -1,5 +1,7 @@
 package com.ModEd;
 
+import com.ModEd.CreeperBot.ItemCreeperBot;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,7 +23,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid="GenericModID", name="ModEd", version="0.0.0")
+@Mod(modid="ModEdModID", name="ModEd", version="0.0.0")
 @NetworkMod(clientSideRequired=true)
 
 public class ModEd {
@@ -34,10 +36,12 @@ public class ModEd {
         @SidedProxy(clientSide="com.ModEd.client.ClientProxy", serverSide="com.ModEd.CommonProxy")
         public static CommonProxy proxy;
         
+    	private static ItemCreeperBot itemCreeperBot;
+        
         @EventHandler // used in 1.6.2
         //@PreInit    // used in 1.5.2
         public void preInit(FMLPreInitializationEvent event) {
-                // Stub Method
+        	itemCreeperBot = new ItemCreeperBot(5000);
         }
         
         @EventHandler // used in 1.6.2
@@ -49,6 +53,8 @@ public class ModEd {
 		   ItemStack diamondsStack = new ItemStack(Item.diamond, 64);
 		
 		   GameRegistry.addShapelessRecipe(diamondsStack, dirtStack, dirtStack);
+		   
+		   LanguageRegistry.addName(itemCreeperBot, "Creeper Bot");
                 
         }
         
