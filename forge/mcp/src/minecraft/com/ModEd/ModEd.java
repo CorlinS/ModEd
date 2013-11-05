@@ -24,7 +24,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid="ModEdModID", name="ModEd", version="0.0.0")
+@Mod(modid="modedmodid", name="ModEd", version="0.0.0")
 @NetworkMod(clientSideRequired=true)
 
 public class ModEd {
