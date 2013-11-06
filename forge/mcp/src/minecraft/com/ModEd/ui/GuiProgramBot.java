@@ -48,6 +48,11 @@ public class GuiProgramBot extends GuiScreen {
 	
 	private TileEntityCreeperBot tileEntity;
 	
+    private static final char up = '\u25B2';
+    private static final char dn = '\u25BC';
+    private static final char lf = '\u25C0';
+    private static final char rg = '\u25B6';
+	
     public GuiProgramBot (EntityPlayer player,
     		TileEntityCreeperBot tileEntity) {
         super.initGui();
@@ -55,7 +60,7 @@ public class GuiProgramBot extends GuiScreen {
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
         this.tileEntity = tileEntity;
-            //the container is instantiated and passed to the superclass for handling
+            //the container is instanciated and passed to the superclass for handling
            //super(new ContainerTiny(inventoryPlayer, tileEntity));
         }
 
@@ -73,26 +78,43 @@ public class GuiProgramBot extends GuiScreen {
                 int y = (height - ySize) / 2;
                 this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
                 
-                fontRenderer.drawString("Choose the commands to order", x+8, y+6, 4210752);
+                fontRenderer.drawString("Commands to give the bot:", x+8, y+6, 4210752);
                 
+                String displayCommands = "Commands: ";
                 
+                for(Integer i : commands) {
+                	switch(i) {
+	                	case 1: 
+	                		displayCommands += up + " ";
+	                		break;
+	                	case 2: 
+	                		displayCommands += dn + " ";
+	                		break;
+	                	case 3: 
+	                		displayCommands += lf + " ";
+	                		break;
+	                	case 4: 
+	                		displayCommands += rg + " ";
+	                		break;
+                	}
+                }
+                
+                displayCommands = displayCommands.substring(0, displayCommands.length() - 1);
+                
+                int ycoords = y+70;
+                
+                while(displayCommands.length() > 30) {
+                	fontRenderer.drawString(displayCommands.substring(0,30), x+10, ycoords, 4210752);
+                	displayCommands = displayCommands.substring(30, displayCommands.length());
+                	ycoords += 15;
+                }
+                fontRenderer.drawString(displayCommands, x+10, ycoords, 4210752);
+             
             
             //TODO: LOCALIZE our mod. 
             // fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
     }
 
-//        @Override
-//                        int par3) {
-//        	ResourceLocation rel = new ResourceLocation("moded","textures/gui/demo_background.png");
-//        	
-//            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//            this.mc.getTextureManager().bindTexture(rel);
-// 
-//            int x = (width - xSize) / 2;
-//            int y = (height - ySize) / 2;
-//            this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-//        }
-    
     /**
      * Draws the screen and all the components in it.
      */
@@ -130,24 +152,21 @@ public class GuiProgramBot extends GuiScreen {
     
     @Override
     public void initGui() {
-           // super.initGui();
-            //make buttons
-            
+           
             //id, x, y, width, height, text
-            buttonList.add(new GuiButton(1, 140, 72, 20, 20, "▲"));
-            buttonList.add(new GuiButton(2, 170, 72, 20, 20, "▼"));
-            buttonList.add(new GuiButton(3, 200, 72, 20, 20, "◄"));
-            buttonList.add(new GuiButton(4, 230, 72, 20, 20, "►"));
+            buttonList.add(new GuiButton(1, 170, 60, 20, 20, Character.toString(up)));
+            buttonList.add(new GuiButton(2, 170, 80, 20, 20, Character.toString(dn)));
+            buttonList.add(new GuiButton(3, 150, 70, 20, 20, Character.toString(lf)));
+            buttonList.add(new GuiButton(4, 190, 70, 20, 20, Character.toString(rg)));
             
-            
-            buttonList.add(new GuiButton(100, 260, 92, 20, 20, "OK"));
+            buttonList.add(new GuiButton(100, 230, 70, 30, 20, "GO!"));
     }
 
     protected void actionPerformed(GuiButton guibutton) {
             //id is the id you give your button
             switch(guibutton.id) {
             
-            case 100:
+            case 100:                
                 	ByteArrayOutputStream bos = new ByteArrayOutputStream(8 * commands.size());
                     DataOutputStream outputStream = new DataOutputStream(bos);
                     try {
@@ -170,11 +189,10 @@ public class GuiProgramBot extends GuiScreen {
                     packet.length = bos.size();
                     
                     //Packet code here
-                    PacketDispatcher.sendPacketToServer(packet); //send packet
-                    
-                    //close the window. 
-                    this.mc.thePlayer.closeScreen();
-                    
+                    PacketDispatcher.sendPacketToServer(packet); //send packet               
+                   
+           	    //close the window. 
+                this.mc.thePlayer.closeScreen();   
                 break;
             default:
             	commands.add(guibutton.id);
