@@ -52,8 +52,8 @@ public class ModEd {
         public void preInit(FMLPreInitializationEvent event) {
 
         	blockCreeperBot = new BlockCreeperBot(500);
-        	itemBotWheel = new ItemBotWheel(5000);
-        	itemBotHead = new ItemBotHead(5001);
+        	itemBotWheel = new ItemBotWheel(5010);
+        	itemBotHead = new ItemBotHead(5011);
         	
         }
         
@@ -62,13 +62,13 @@ public class ModEd {
         public void load(FMLInitializationEvent event) {
            proxy.registerRenderers();
                 
-           GameRegistry.addRecipe(new ItemStack(itemBotWheel), " x", "xyx", " x",
+           GameRegistry.addRecipe(new ItemStack(itemBotWheel), " x ", "xyx", " x ",
         		   'x', new ItemStack(Block.cobblestone), 'y', new ItemStack(Item.ingotIron));
            
            GameRegistry.addRecipe(new ItemStack(itemBotHead), "xyx", "yzy", "xyx",
         		   'x', new ItemStack(Block.leaves), 'y', new ItemStack(Item.ingotIron), 'z', new ItemStack(Item.gunpowder));
            
-		   GameRegistry.addRecipe(new ItemStack(blockCreeperBot), "x x", " y", "x x",
+		   GameRegistry.addRecipe(new ItemStack(blockCreeperBot), "x x", " y ", "x x",
 			        'x', new ItemStack(itemBotWheel), 'y', new ItemStack(itemBotHead));
 		   
 		   LanguageRegistry.addName(blockCreeperBot, "Creeper Bot");
