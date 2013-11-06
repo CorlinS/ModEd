@@ -1,5 +1,7 @@
 package com.ModEd.CreeperBot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.ModEd.ModEd;
@@ -29,6 +31,10 @@ public class BlockCreeperBot extends Block implements ITileEntityProvider{
 		setTextureName("moded:creeper_bot");
 	}
 	
+	public void breakBlock(World world, int x, int y, int z, int i, int j) {
+		world.removeBlockTileEntity(x, y, z);
+	}
+	
 	private void moveForward(TileEntity tileEntity, int spaces) {
 		((TileEntityCreeperBot)tileEntity).move(spaces);
 	}
@@ -42,25 +48,16 @@ public class BlockCreeperBot extends Block implements ITileEntityProvider{
 		}
 		//code to open gui explained later
 		player.openGui(ModEd.instance, 0, world, x, y, z);
+
+//		((TileEntityCreeperBot)tileEntity).commands.add(1);
+//		((TileEntityCreeperBot)tileEntity).commands.add(1);
+//		((TileEntityCreeperBot)tileEntity).commands.add(1);
+//		((TileEntityCreeperBot)tileEntity).commands.add(1);
+//		
+//		((TileEntityCreeperBot)tileEntity).runCommand();
 		
-		//moveForward(tileEntity, 4);
 		return true;
 	}
-	
-	@Override
-	public int onBlockPlaced(World world, int i, int j, int k, int l, float hitX, float hitY, float hitZ, int metadata)
-    {
-        super.onBlockPlaced(world, i, j, k, l, hitX, hitY, hitZ, metadata);
-        
-        if (l == 0 || l == 1)
-        {
-            l = 3;
-        }
-        
-        setDirection(world, i, j, k, l);
-        
-        return metadata;
-    }
 	
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entityliving, ItemStack itemStack)
@@ -94,16 +91,7 @@ public class BlockCreeperBot extends Block implements ITileEntityProvider{
 		return new TileEntityCreeperBot();
 	}
 	
-    public TileEntity getBlockEntity(int i)
-    {
-        return createDefaultCreeperBot(2 + (i >> 2 & 3));
-    }
-    
-    private TileEntityCreeperBot createDefaultCreeperBot(int direction) {
-    	
-        return new TileEntityCreeperBot(direction);
-    }
-	
+
 	private void setDirection(World world, int i, int j, int k, int l)
     {
         TileEntity tileentity = world.getBlockTileEntity(i, j, k);

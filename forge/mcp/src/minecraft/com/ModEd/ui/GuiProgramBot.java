@@ -55,7 +55,7 @@ public class GuiProgramBot extends GuiScreen {
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
         this.tileEntity = tileEntity;
-            //the container is instanciated and passed to the superclass for handling
+            //the container is instantiated and passed to the superclass for handling
            //super(new ContainerTiny(inventoryPlayer, tileEntity));
         }
 
@@ -148,29 +148,30 @@ public class GuiProgramBot extends GuiScreen {
             switch(guibutton.id) {
             
             case 100:
-            	tileEntity.programBlock(commands);
-            	//ModEd.instance.programTile(commands);
-//                	ByteArrayOutputStream bos = new ByteArrayOutputStream(8 * commands.size());
-//                    DataOutputStream outputStream = new DataOutputStream(bos);
-//                    try {
-//                    	//Write our size
-//                    	outputStream.writeInt(commands.size());
-//                    	//Write our data
-//                    	for(Integer i : commands) {
-//                            outputStream.writeInt(i.intValue());
-//                    	}
-//                    } catch (Exception ex) {
-//                            ex.printStackTrace();
-//                    }
-//
-//                    Packet250CustomPayload packet = new Packet250CustomPayload();
-//                    packet.channel = "GenericRandom";
-//                    packet.data = bos.toByteArray();
-//                    packet.length = bos.size();
-//                    
-//                    //Packet code here
-//                    PacketDispatcher.sendPacketToServer(packet); //send packet
-//                    
+                	ByteArrayOutputStream bos = new ByteArrayOutputStream(8 * commands.size());
+                    DataOutputStream outputStream = new DataOutputStream(bos);
+                    try {
+                    	//Write our size
+                    	outputStream.writeInt(commands.size());
+                    	outputStream.writeInt(tileEntity.xCoord);
+                    	outputStream.writeInt(tileEntity.yCoord);
+                    	outputStream.writeInt(tileEntity.zCoord);
+                    	//Write our data
+                    	for(Integer i : commands) {
+                            outputStream.writeInt(i.intValue());
+                    	}
+                    } catch (Exception ex) {
+                            ex.printStackTrace();
+                    }
+
+                    Packet250CustomPayload packet = new Packet250CustomPayload();
+                    packet.channel = "GenericRandom";
+                    packet.data = bos.toByteArray();
+                    packet.length = bos.size();
+                    
+                    //Packet code here
+                    PacketDispatcher.sendPacketToServer(packet); //send packet
+                    
                     //close the window. 
                     this.mc.thePlayer.closeScreen();
                     

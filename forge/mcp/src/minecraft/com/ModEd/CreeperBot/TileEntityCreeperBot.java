@@ -25,7 +25,7 @@ import net.minecraft.entity.monster.*;
 public class TileEntityCreeperBot extends TileEntity {
 
 	private boolean moved = false;
-	private List<Integer> commands;
+	public List<Integer> commands;
 	private int direction;
 	private static final ScheduledExecutorService worker = 
 			  Executors.newSingleThreadScheduledExecutor();
@@ -155,11 +155,11 @@ public class TileEntityCreeperBot extends TileEntity {
 				return false;
 			}
 		}
-//		AxisAlignedBB axisalignedbb = ModEd.blockCreeperBot.getCollisionBoundingBoxFromPool(worldObj, i1, j1, k1);
-//		if (axisalignedbb != null && !worldObj.checkIfAABBIsClear(axisalignedbb))
-//		{
-//			return false;
-//		}
+		AxisAlignedBB axisalignedbb = ModEd.blockCreeperBot.getCollisionBoundingBoxFromPool(worldObj, i1, j1, k1);
+		if (axisalignedbb != null && !worldObj.checkNoEntityCollision(axisalignedbb))
+		{
+			return false;
+		}
 		moved = true;
 		World world = worldObj;
 		world.setBlock(j, k, l, 0);
