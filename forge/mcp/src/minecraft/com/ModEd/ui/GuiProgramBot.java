@@ -101,6 +101,18 @@ public class GuiProgramBot extends GuiScreen {
 	                	case 4: 
 	                		displayCommands += rg + " ";
 	                		break;
+	                	case 5: 
+	                		displayCommands += "x2 ";
+	                		break;
+	                	case 6: 
+	                		displayCommands += "x4 ";
+	                		break;
+	                	case 7: 
+	                		displayCommands += "x8 ";
+	                		break;
+	                	case 8: 
+	                		displayCommands += "x16 ";
+	                		break;
                 	}
                 }
                 
@@ -168,14 +180,21 @@ public class GuiProgramBot extends GuiScreen {
             buttonList.add(new GuiButton(3, x+10, y+30, 20, 20, Character.toString(lf)));
             buttonList.add(new GuiButton(4, x+50, y+30, 20, 20, Character.toString(rg)));
             
-            buttonList.add(new GuiButton(100, x+90, y+30, 30, 20, "GO!"));
+            
+            buttonList.add(new GuiButton(5, x+70, y+50, 20, 20, "x2"));
+            buttonList.add(new GuiButton(6, x+90, y+50, 20, 20, "x4"));
+            buttonList.add(new GuiButton(7, x+110, y+50, 20, 20, "x8"));
+            buttonList.add(new GuiButton(8, x+130, y+50, 20, 20, "x16"));
+            
+            
+            buttonList.add(new GuiButton(100, x+120, y+20, 30, 20, "GO!"));
     }
 
     protected void actionPerformed(GuiButton guibutton) {
             //id is the id you give your button
             switch(guibutton.id) {
             
-            case 100:                
+            case 100:          
                 	ByteArrayOutputStream bos = new ByteArrayOutputStream(8 * commands.size());
                     DataOutputStream outputStream = new DataOutputStream(bos);
                     try {
@@ -203,9 +222,21 @@ public class GuiProgramBot extends GuiScreen {
            	    //close the window. 
                 this.mc.thePlayer.closeScreen();   
                 break;
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            	if(!commands.isEmpty()) {
+            		int command = commands.get(commands.size()-1);
+            		if(command < 5) {
+            			commands.add(guibutton.id);
+            		}
+            	}
+            	break;
             default:
             	commands.add(guibutton.id);
             	break;
+            	
                 
             }
             
