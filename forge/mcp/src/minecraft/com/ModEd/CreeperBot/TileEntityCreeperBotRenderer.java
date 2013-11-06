@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Facing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -58,7 +59,22 @@ public class TileEntityCreeperBotRenderer extends TileEntitySpecialRenderer {
 	 * 0.5D) & 3; world.setBlockMetadataWithNotify(x, y, z, dir, 0);
 	 */
 
-	int dir = tl.getDirection() - 2;
+	int dir;
+	switch (world.getBlockMetadata(i, j, k)) {
+	case 2: // North
+	    dir = 0;
+	    break;
+	case 3: // South
+	default:
+	    dir = 2;
+	    break;
+	case 4: // West
+	    dir = 3;
+	    break;
+	case 5: // East
+	    dir = 1;
+	    break;
+	}
 
 	GL11.glPushMatrix();
 	GL11.glTranslatef(0.5F, 0, 0.5F);

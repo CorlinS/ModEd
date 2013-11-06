@@ -100,6 +100,7 @@ public class BlockCreeperBot extends Block implements ITileEntityProvider{
         {
             TileEntityCreeperBot tileentitycreeperbot = (TileEntityCreeperBot)tileentity;
             tileentitycreeperbot.setDir(l);
+            world.setBlockMetadataWithNotify(i, j, k, tileentitycreeperbot.getDirection(), 0);
             
         }
     }

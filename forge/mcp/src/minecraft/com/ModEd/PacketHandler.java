@@ -37,7 +37,17 @@ public class PacketHandler implements IPacketHandler {
 			int zCoord = inputStream.readInt();
 
 			for(int i = 0; i < length; i++) { 
-				commands.add(inputStream.readInt());
+				int command = inputStream.readInt();
+				if(command < 5) {
+						commands.add(command);
+				} else {
+					//These are the x commands, so add many of a previous command. 
+					int multi = (int) Math.pow(2, (command-4));
+					int lastcommand = commands.get(commands.size()-1);
+					for(int j = 0; j < multi-1; j++) {
+						commands.add(lastcommand);
+					}
+				}
 			}
 			
 			TileEntity tileEntityCreeperBot = ((EntityPlayer)playerEntity).worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
