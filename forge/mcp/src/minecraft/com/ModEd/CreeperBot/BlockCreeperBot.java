@@ -40,9 +40,9 @@ public class BlockCreeperBot extends Block implements ITileEntityProvider{
 			return false;
 		}
 		//code to open gui explained later
-//		player.openGui(ModEd.instance, 0, world, x, y, z);
+		player.openGui(ModEd.instance, 0, world, x, y, z);
 		
-		moveForward(tileEntity, 4);
+		//moveForward(tileEntity, 4);
 		return true;
 	}
 	

@@ -21,6 +21,7 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.ModEd.ModEd;
 import com.ModEd.CreeperBot.TileEntityCreeperBot;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -45,12 +46,15 @@ public class GuiProgramBot extends GuiScreen {
 
 	private List<Integer> commands = new ArrayList<Integer>();
 	
+	private TileEntityCreeperBot tileEntity;
+	
     public GuiProgramBot (EntityPlayer player,
     		TileEntityCreeperBot tileEntity) {
         super.initGui();
        
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
+        this.tileEntity = tileEntity;
             //the container is instanciated and passed to the superclass for handling
            //super(new ContainerTiny(inventoryPlayer, tileEntity));
         }
@@ -144,27 +148,29 @@ public class GuiProgramBot extends GuiScreen {
             switch(guibutton.id) {
             
             case 100:
-                	ByteArrayOutputStream bos = new ByteArrayOutputStream(8 * commands.size());
-                    DataOutputStream outputStream = new DataOutputStream(bos);
-                    try {
-                    	//Write our size
-                    	outputStream.writeInt(commands.size());
-                    	//Write our data
-                    	for(Integer i : commands) {
-                            outputStream.writeInt(i.intValue());
-                    	}
-                    } catch (Exception ex) {
-                            ex.printStackTrace();
-                    }
-
-                    Packet250CustomPayload packet = new Packet250CustomPayload();
-                    packet.channel = "GenericRandom";
-                    packet.data = bos.toByteArray();
-                    packet.length = bos.size();
-                    
-                    //Packet code here
-                    PacketDispatcher.sendPacketToServer(packet); //send packet
-                    
+            	tileEntity.programBlock(commands);
+            	//ModEd.instance.programTile(commands);
+//                	ByteArrayOutputStream bos = new ByteArrayOutputStream(8 * commands.size());
+//                    DataOutputStream outputStream = new DataOutputStream(bos);
+//                    try {
+//                    	//Write our size
+//                    	outputStream.writeInt(commands.size());
+//                    	//Write our data
+//                    	for(Integer i : commands) {
+//                            outputStream.writeInt(i.intValue());
+//                    	}
+//                    } catch (Exception ex) {
+//                            ex.printStackTrace();
+//                    }
+//
+//                    Packet250CustomPayload packet = new Packet250CustomPayload();
+//                    packet.channel = "GenericRandom";
+//                    packet.data = bos.toByteArray();
+//                    packet.length = bos.size();
+//                    
+//                    //Packet code here
+//                    PacketDispatcher.sendPacketToServer(packet); //send packet
+//                    
                     //close the window. 
                     this.mc.thePlayer.closeScreen();
                     
