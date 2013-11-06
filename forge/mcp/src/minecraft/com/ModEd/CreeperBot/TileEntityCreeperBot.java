@@ -2,23 +2,33 @@ package com.ModEd.CreeperBot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import com.ModEd.ModEd;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraft.entity.monster.*;
+
 
 public class TileEntityCreeperBot extends TileEntity {
 
 	private boolean moved = false;
 	private List<Integer> commands;
 	private int direction;
+	private static final ScheduledExecutorService worker = 
+			  Executors.newSingleThreadScheduledExecutor();
 	
 	public TileEntityCreeperBot() {
 		commands = new ArrayList<Integer>(10);
@@ -28,9 +38,104 @@ public class TileEntityCreeperBot extends TileEntity {
 	public TileEntityCreeperBot(int direction) {
 		this.direction = direction;
 	}
+	
+	public void runCommand() {
+			
+		//If we have a list, run the first command
+		if(!this.commands.isEmpty()) {
+			//Run the first command in the list, then delete it. 
+			 Runnable task = new Runnable() {
+				    private int command;
+	
+				    public Runnable init(int command) {
+				    	this.command = command;
+				    	return (this);
+				    }
+				    
+					public void run() {
+						System.out.println("running command: " + command);
+						switch (command) {
+							case 1:
+								move(1);
+								break;
+							case 2:
+								move(-1);
+								break;
+							case 3:
+								turnRight();
+								break;
+							case 4:
+								turnLeft();
+								break;
+						}
+				    }
+				  }.init(commands.get(0));
+				  
+	  
+			  worker.schedule(task, 500, TimeUnit.MILLISECONDS);
+			  commands.remove(0);
+		} else {
+	
+//			EntityIronGolem asdf = new EntityIronGolem(this.worldObj);
+//	        
+//			Explosion boom = this.worldObj.createExplosion(asdf, (double)this.xCoord, 
+//					(double)this.yCoord, (double)this.zCoord, (float)(1), true);
+//			boom.doExplosionA();
+		}
+		  
+	}
+	
+	
 
+	public void turnRight()
+	{
+		System.out.println("turning right " + this.direction);
+		 switch (direction) {
+	         case 2 :
+	        	 	direction = 4;
+	                 break;
+	         case 3 :
+	        	 	direction = 5;
+	                 break;
+	         case 4 :
+	        	 	direction = 3;
+	                 break;
+	         case 5 :
+	        	 	direction = 2;
+	                 break;
+		 }
+		 
+		this.runCommand();
+	}
+	
+	
+
+	public void turnLeft()
+	{
+		System.out.println("turnign left " + this.direction);
+		switch (direction) {
+		   case 2 :
+			   direction = 5;
+               break;
+
+	       case 3 :
+	    	   direction = 4;
+	               break;
+	
+	       case 4 :
+	    	   direction = 2;
+	               break;
+	
+	       case 5 :
+	    	   direction = 3;
+	               break;
+		 }
+		this.runCommand();
+	}
+	
 	public boolean move(int i)
 	{
+		System.out.println("moving " + i);
 		int j = xCoord;
 		int k = yCoord;
 		int l = zCoord;
@@ -65,6 +170,7 @@ public class TileEntityCreeperBot extends TileEntity {
 		{
 			TileEntityCreeperBot tileentitycreeperbot = (TileEntityCreeperBot)tileentity;
 			tileentitycreeperbot.transferStateFrom(this);
+			tileentitycreeperbot.runCommand();
 			//tileentitycreeperbot.startAnimation(0);
 			//tileentitycreeperbot.updateAnimation();
 		}
@@ -92,7 +198,7 @@ public class TileEntityCreeperBot extends TileEntity {
     {
         commands = tileentitycreeperbot.commands;
         //clientState = tileentitycreeperbot.clientState;
-        
+        direction  = tileentitycreeperbot.direction;
         moved = false;
     }
 
@@ -111,6 +217,11 @@ public class TileEntityCreeperBot extends TileEntity {
 		//                    }
 		//            }
 		tagCompound.setTag("Commands", commandList);
+	}
+	
+	public void programBlock(List<Integer> commands) {
+		this.commands = commands;
+		runCommand();
 	}
 
 }
