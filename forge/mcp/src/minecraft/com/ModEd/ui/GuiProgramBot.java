@@ -52,13 +52,18 @@ public class GuiProgramBot extends GuiScreen {
     private static final char dn = '\u25BC';
     private static final char lf = '\u25C0';
     private static final char rg = '\u25B6';
+    
+    int x = 0;
+    int y = 0;
 	
     public GuiProgramBot (EntityPlayer player,
     		TileEntityCreeperBot tileEntity) {
-        super.initGui();
+    	 super.initGui();
        
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
+
+        
         this.tileEntity = tileEntity;
             //the container is instanciated and passed to the superclass for handling
            //super(new ContainerTiny(inventoryPlayer, tileEntity));
@@ -95,6 +100,18 @@ public class GuiProgramBot extends GuiScreen {
 	                		break;
 	                	case 4: 
 	                		displayCommands += rg + " ";
+	                		break;
+	                	case 5: 
+	                		displayCommands += "x2 ";
+	                		break;
+	                	case 6: 
+	                		displayCommands += "x4 ";
+	                		break;
+	                	case 7: 
+	                		displayCommands += "x8 ";
+	                		break;
+	                	case 8: 
+	                		displayCommands += "x16 ";
 	                		break;
                 	}
                 }
@@ -153,20 +170,31 @@ public class GuiProgramBot extends GuiScreen {
     @Override
     public void initGui() {
            
+	        int x = (width - xSize) / 2;
+	        int y = (height - ySize) / 2;
+	        
+        
             //id, x, y, width, height, text
-            buttonList.add(new GuiButton(1, 170, 60, 20, 20, Character.toString(up)));
-            buttonList.add(new GuiButton(2, 170, 80, 20, 20, Character.toString(dn)));
-            buttonList.add(new GuiButton(3, 150, 70, 20, 20, Character.toString(lf)));
-            buttonList.add(new GuiButton(4, 190, 70, 20, 20, Character.toString(rg)));
+            buttonList.add(new GuiButton(1, x+30, y+20, 20, 20, Character.toString(up)));
+            buttonList.add(new GuiButton(2, x+30, y+40, 20, 20, Character.toString(dn)));
+            buttonList.add(new GuiButton(3, x+10, y+30, 20, 20, Character.toString(lf)));
+            buttonList.add(new GuiButton(4, x+50, y+30, 20, 20, Character.toString(rg)));
             
-            buttonList.add(new GuiButton(100, 230, 70, 30, 20, "GO!"));
+            
+            buttonList.add(new GuiButton(5, x+70, y+50, 20, 20, "x2"));
+            buttonList.add(new GuiButton(6, x+90, y+50, 20, 20, "x4"));
+            buttonList.add(new GuiButton(7, x+110, y+50, 20, 20, "x8"));
+            buttonList.add(new GuiButton(8, x+130, y+50, 20, 20, "x16"));
+            
+            
+            buttonList.add(new GuiButton(100, x+120, y+20, 30, 20, "GO!"));
     }
 
     protected void actionPerformed(GuiButton guibutton) {
             //id is the id you give your button
             switch(guibutton.id) {
             
-            case 100:                
+            case 100:          
                 	ByteArrayOutputStream bos = new ByteArrayOutputStream(8 * commands.size());
                     DataOutputStream outputStream = new DataOutputStream(bos);
                     try {
@@ -194,9 +222,21 @@ public class GuiProgramBot extends GuiScreen {
            	    //close the window. 
                 this.mc.thePlayer.closeScreen();   
                 break;
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            	if(!commands.isEmpty()) {
+            		int command = commands.get(commands.size()-1);
+            		if(command < 5) {
+            			commands.add(guibutton.id);
+            		}
+            	}
+            	break;
             default:
             	commands.add(guibutton.id);
             	break;
+            	
                 
             }
             

@@ -21,7 +21,6 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.entity.monster.*;
 
-
 public class TileEntityCreeperBot extends TileEntity {
 
 	private boolean moved = false;
@@ -43,6 +42,8 @@ public class TileEntityCreeperBot extends TileEntity {
 			
 		//If we have a list, run the first command
 		if(!this.commands.isEmpty()) {
+			playMoveSound();
+			
 			//Run the first command in the list, then delete it. 
 			 Runnable task = new Runnable() {
 				    private int command;
@@ -74,14 +75,7 @@ public class TileEntityCreeperBot extends TileEntity {
 	  
 			  worker.schedule(task, 500, TimeUnit.MILLISECONDS);
 			  commands.remove(0);
-		} else {
-	
-//			EntityIronGolem asdf = new EntityIronGolem(this.worldObj);
-//	        
-//			Explosion boom = this.worldObj.createExplosion(asdf, (double)this.xCoord, 
-//					(double)this.yCoord, (double)this.zCoord, (float)(1), true);
-//			boom.doExplosionA();
-		}
+		} 
 		  
 	}
 	
@@ -220,6 +214,11 @@ public class TileEntityCreeperBot extends TileEntity {
 		for (Object player : worldObj.playerEntities) {
 			((EntityPlayer)player).addStat(ModEd.KABOOM, 1);
 		}
+	}
+	
+	private void playMoveSound() {
+		this.worldObj.playSoundEffect((double)this.xCoord + 0.5D, (double)this.yCoord + 0.1D, 
+				(double)this.zCoord + 0.5D, "mob.creeper.say", 0.3F, 1.0F);
 	}
 	
 	public void transferStateFrom(TileEntityCreeperBot tileentitycreeperbot)
