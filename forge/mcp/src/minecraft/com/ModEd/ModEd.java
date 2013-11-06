@@ -97,17 +97,17 @@ public class ModEd {
            this.addAchievementName("GunpowderAchievement", "Gunpowder");
            this.addAchievementDesc("GunpowderAchievement", "Hmmm... this could be useful!");
            
-           CREEPER_BOT_CRAFTED = new Achievement(28, "CraftedAchievement", 0, 0, itemBotHead, GUNPOWDER).registerAchievement();
+           CREEPER_BOT_CRAFTED = new Achievement(28, "CraftedAchievement", 0, 0, itemBotHead, null).registerAchievement();
 
            this.addAchievementName("CraftedAchievement", "Creeper Bot Crafted");
            this.addAchievementDesc("CraftedAchievement", "Stuffs gonna SPLODE!");
            
-           KABOOM = new Achievement(29, "SplodedAchievement", 2, 0, Block.tnt, CREEPER_BOT_CRAFTED).registerAchievement();
+           KABOOM = new Achievement(29, "SplodedAchievement", 2, 0, Block.tnt, null).registerAchievement();
 
            this.addAchievementName("SplodedAchievement", "Kaboom!!!");
            this.addAchievementDesc("SplodedAchievement", "Did I do that?");
            
-           SELF_LOATHING = new Achievement(30, "WarfareAchievement", 4, 0, Block.fire, KABOOM).registerAchievement().setSpecial();
+           SELF_LOATHING = new Achievement(30, "WarfareAchievement", 4, 0, Block.fire, null).registerAchievement().setSpecial();
 
            this.addAchievementName("WarfareAchievement", "Self Loathing");
            this.addAchievementDesc("WarfareAchievement", "That's just sad.");
