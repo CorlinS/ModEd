@@ -63,20 +63,16 @@ public class TileEntityCreeperBotRenderer extends TileEntitySpecialRenderer {
 	switch (world.getBlockMetadata(i, j, k)) {
 	case 2: // North
 	    dir = 0;
-	    System.out.println("Facing North");
 	    break;
 	case 3: // South
 	default:
 	    dir = 2;
-	    System.out.println("Facing South");
 	    break;
 	case 4: // West
 	    dir = 3;
-	    System.out.println("Facing West");
 	    break;
 	case 5: // East
 	    dir = 1;
-	    System.out.println("Facing East");
 	    break;
 	}
 

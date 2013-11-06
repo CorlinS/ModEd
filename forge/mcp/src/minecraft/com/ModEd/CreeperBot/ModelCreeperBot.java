@@ -9,27 +9,28 @@ package com.ModEd.CreeperBot;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 
 public class ModelCreeperBot extends ModelBase {
 	// fields
-	ModelRenderer CreeperBot;
+	ModelRenderer creeperBot;
 
 	public ModelCreeperBot() {
 		textureWidth = 64;
 		textureHeight = 32;
 
-		CreeperBot = new ModelRenderer(this, 0, 0);
-		CreeperBot.addBox(0F, 0F, 0F, 16, 16, 16);
-		CreeperBot.setRotationPoint(0F, 0F, 0F);
-		CreeperBot.setTextureSize(64, 32);
+		creeperBot = new ModelRenderer(this, 0, 0);
+		creeperBot.addBox(0F, 0F, 0F, 16, 16, 16);
+		creeperBot.setRotationPoint(0F, 0F, 0F);
+		creeperBot.setTextureSize(64, 32);
 		// CreeperBot.mirror = true;
-		setRotation(CreeperBot, 0F, 0F, 0F);
+		setRotation(creeperBot, 0F, 0F, 0F);
 	}
 
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		CreeperBot.render(f5);
+		creeperBot.render(f5);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {

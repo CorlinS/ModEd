@@ -99,7 +99,7 @@ public class TileEntityCreeperBot extends TileEntity {
 	                 break;
 		 }
 		 
-		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, getDirection(), 0);
+		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, getDirection(), 3);
 
 		this.runCommand();
 	}
@@ -127,7 +127,7 @@ public class TileEntityCreeperBot extends TileEntity {
 	               break;
 		 }
 
-		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, getDirection(), 0);
+		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, getDirection(), 3);
 
 		this.runCommand();
 	}
