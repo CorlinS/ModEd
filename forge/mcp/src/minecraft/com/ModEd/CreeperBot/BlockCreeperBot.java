@@ -25,8 +25,8 @@ public class BlockCreeperBot extends Block implements ITileEntityProvider{
 
 	public BlockCreeperBot (int id) {
 		super(id, Material.wood);
-		setHardness(2.0F);
-		setResistance(5.0F);
+		setHardness(1.0F);
+		setResistance(1.0F);
 		setCreativeTab(CreativeTabs.tabMisc);
 		setTextureName("moded:creeper_bot");
 	}

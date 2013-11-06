@@ -112,7 +112,7 @@ public class TileEntityCreeperBot extends TileEntity {
 
 	public void turnLeft()
 	{
-		System.out.println("turnign left " + this.direction);
+		System.out.println("turning left " + this.direction);
 		switch (direction) {
 		   case 2 :
 			   direction = 5;
@@ -152,12 +152,26 @@ public class TileEntityCreeperBot extends TileEntity {
 			Block block = Block.blocksList[l1];
 			if (!block.isBlockReplaceable(worldObj, i1, j1, k1))
 			{
+				//We hit something! EXPLOOOODDDE!
+				EntityIronGolem asdf = new EntityIronGolem(this.worldObj);
+		        
+				Explosion boom = this.worldObj.createExplosion(asdf, (double)this.xCoord, 
+						(double)this.yCoord, (double)this.zCoord, (float)(3), true);
+				boom.doExplosionA();
+				
 				return false;
 			}
 		}
 		AxisAlignedBB axisalignedbb = ModEd.blockCreeperBot.getCollisionBoundingBoxFromPool(worldObj, i1, j1, k1);
 		if (axisalignedbb != null && !worldObj.checkNoEntityCollision(axisalignedbb))
 		{
+			//We hit something! EXPLOOOODDDE!
+			EntityIronGolem asdf = new EntityIronGolem(this.worldObj);
+	        
+			Explosion boom = this.worldObj.createExplosion(asdf, (double)this.xCoord, 
+					(double)this.yCoord, (double)this.zCoord, (float)(3), true);
+			boom.doExplosionA();
+			
 			return false;
 		}
 		moved = true;
