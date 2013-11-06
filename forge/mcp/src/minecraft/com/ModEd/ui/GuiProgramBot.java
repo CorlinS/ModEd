@@ -79,8 +79,8 @@ public class GuiProgramBot extends GuiScreen {
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 this.mc.getTextureManager().bindTexture(rel);
      
-                int x = (width - xSize) / 2;
-                int y = (height - ySize) / 2;
+                int x = 10; //(width - xSize) / 2;
+                int y = 10; //(height - ySize) / 2;
                 this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
                 
                 fontRenderer.drawString("Commands to give the bot:", x+8, y+6, 4210752);
@@ -138,7 +138,7 @@ public class GuiProgramBot extends GuiScreen {
     public void drawScreen(int par1, int par2, float par3)
     {
     	
-    	 this.drawDefaultBackground();
+    	// this.drawDefaultBackground();
          int k = this.guiLeft;
          int l = this.guiTop;
          
@@ -170,8 +170,8 @@ public class GuiProgramBot extends GuiScreen {
     @Override
     public void initGui() {
            
-	        int x = (width - xSize) / 2;
-	        int y = (height - ySize) / 2;
+	        int x = 10; //(width - xSize) / 2;
+	        int y = 10; //(height - ySize) / 2;
 	        
         
             //id, x, y, width, height, text
