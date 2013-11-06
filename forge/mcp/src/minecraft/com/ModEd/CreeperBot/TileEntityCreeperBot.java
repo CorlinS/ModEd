@@ -105,6 +105,8 @@ public class TileEntityCreeperBot extends TileEntity {
 	                 break;
 		 }
 		 
+		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, getDirection(), 0);
+
 		this.runCommand();
 	}
 	
@@ -130,6 +132,9 @@ public class TileEntityCreeperBot extends TileEntity {
 	    	   direction = 3;
 	               break;
 		 }
+
+		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, getDirection(), 0);
+
 		this.runCommand();
 	}
 	
@@ -175,7 +180,7 @@ public class TileEntityCreeperBot extends TileEntity {
 		World world = worldObj;
 		world.setBlock(j, k, l, 0);
 //		int i2 = ((clientState.dir - 2 & 3) << 2) + (clientState.subType & 3);
-		world.setBlock(i1, j1, k1, ModEd.blockCreeperBot.blockID, 3, 3);
+		world.setBlock(i1, j1, k1, ModEd.blockCreeperBot.blockID, getDirection(), 3);
 		TileEntity tileentity = world.getBlockTileEntity(i1, j1, k1);
 		if (tileentity != null && (tileentity instanceof TileEntityCreeperBot))
 		{
@@ -247,9 +252,9 @@ public class TileEntityCreeperBot extends TileEntity {
 		runCommand();
 	}
 
-    public int getDirection() {
-	return direction;
-    }
-
+	public int getDirection() {
+	    return direction;
+	}
+    
 }
 
