@@ -247,5 +247,9 @@ public class TileEntityCreeperBot extends TileEntity {
 		runCommand();
 	}
 
+    public int getDirection() {
+	return direction;
+    }
+
 }
 
