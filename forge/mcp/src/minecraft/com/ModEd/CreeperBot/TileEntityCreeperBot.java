@@ -153,11 +153,13 @@ public class TileEntityCreeperBot extends TileEntity {
 			if (!block.isBlockReplaceable(worldObj, i1, j1, k1))
 			{
 				//We hit something! EXPLOOOODDDE!
-				EntityIronGolem asdf = new EntityIronGolem(this.worldObj);
-		        
-				Explosion boom = this.worldObj.createExplosion(asdf, (double)this.xCoord, 
-						(double)this.yCoord, (double)this.zCoord, (float)(3), true);
-				boom.doExplosionA();
+				splode();
+				
+				if (block.blockID == ModEd.blockCreeperBot.blockID) {
+					for (Object player : worldObj.playerEntities) {
+						((EntityPlayer)player).addStat(ModEd.SELF_LOATHING, 1);
+					}
+				}
 				
 				return false;
 			}
@@ -166,12 +168,7 @@ public class TileEntityCreeperBot extends TileEntity {
 		if (axisalignedbb != null && !worldObj.checkNoEntityCollision(axisalignedbb))
 		{
 			//We hit something! EXPLOOOODDDE!
-			EntityIronGolem asdf = new EntityIronGolem(this.worldObj);
-	        
-			Explosion boom = this.worldObj.createExplosion(asdf, (double)this.xCoord, 
-					(double)this.yCoord, (double)this.zCoord, (float)(3), true);
-			boom.doExplosionA();
-			
+			splode();
 			return false;
 		}
 		moved = true;
@@ -206,6 +203,18 @@ public class TileEntityCreeperBot extends TileEntity {
 	
 	public void setDir(int facing) {
 		direction = facing;
+	}
+	
+	private void splode() {
+		EntityIronGolem asdf = new EntityIronGolem(this.worldObj);
+        
+		Explosion boom = this.worldObj.createExplosion(asdf, (double)this.xCoord, 
+				(double)this.yCoord, (double)this.zCoord, (float)(3), true);
+		boom.doExplosionA();
+		
+		for (Object player : worldObj.playerEntities) {
+			((EntityPlayer)player).addStat(ModEd.KABOOM, 1);
+		}
 	}
 	
 	public void transferStateFrom(TileEntityCreeperBot tileentitycreeperbot)

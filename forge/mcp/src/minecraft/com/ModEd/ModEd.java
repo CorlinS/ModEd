@@ -12,6 +12,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.stats.Achievement;
+import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
 //import cpw.mods.fml.common.Mod.Init;
@@ -47,6 +49,15 @@ public class ModEd {
         public static Item itemBotWheel;
         public static Item itemBotHead;
         
+        // Achievements
+        
+        public static Achievement GUNPOWDER;
+        public static Achievement CREEPER_BOT_CRAFTED;
+        public static Achievement SELF_LOATHING;
+        public static Achievement KABOOM;
+        
+        public static AchievementPage MOD_ED_ACHIEVEMENTS;
+        
         @EventHandler // used in 1.6.2
         //@PreInit    // used in 1.5.2
         public void preInit(FMLPreInitializationEvent event) {
@@ -81,13 +92,49 @@ public class ModEd {
            //UI setup. 
            NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
                 
-                
+           GUNPOWDER = new Achievement(27, "GunpowderAchievement", -2, 0, Item.gunpowder, null).registerAchievement();
+
+           this.addAchievementName("GunpowderAchievement", "Gunpowder");
+           this.addAchievementDesc("GunpowderAchievement", "Hmmm... this could be useful!");
+           
+           CREEPER_BOT_CRAFTED = new Achievement(28, "CraftedAchievement", 0, 0, itemBotHead, GUNPOWDER).registerAchievement();
+
+           this.addAchievementName("CraftedAchievement", "Creeper Bot Crafted");
+           this.addAchievementDesc("CraftedAchievement", "Stuffs gonna SPLODE!");
+           
+           KABOOM = new Achievement(29, "SplodedAchievement", 2, 0, Block.tnt, CREEPER_BOT_CRAFTED).registerAchievement();
+
+           this.addAchievementName("SplodedAchievement", "Kaboom!!!");
+           this.addAchievementDesc("SplodedAchievement", "Did I do that?");
+           
+           SELF_LOATHING = new Achievement(30, "WarfareAchievement", 4, 0, Block.fire, KABOOM).registerAchievement().setSpecial();
+
+           this.addAchievementName("WarfareAchievement", "Self Loathing");
+           this.addAchievementDesc("WarfareAchievement", "That's just sad.");
+           
+           MOD_ED_ACHIEVEMENTS = new AchievementPage("ModEd Achievements", GUNPOWDER, CREEPER_BOT_CRAFTED, KABOOM, SELF_LOATHING);
+           AchievementPage.registerAchievementPage(MOD_ED_ACHIEVEMENTS);
+           
+           // Achievement related handlers
+           
+           GameRegistry.registerPickupHandler(new PickupHandler());
+           GameRegistry.registerCraftingHandler(new CraftingHandler());
         }
         
         @EventHandler // used in 1.6.2
         //@PostInit   // used in 1.5.2
         public void postInit(FMLPostInitializationEvent event) {
                 // Stub Method
+        }
+        
+        private void addAchievementName(String ach, String name)
+        {
+        LanguageRegistry.instance().addStringLocalization("achievement." + ach, "en_US", name);
+        }
+
+        private void addAchievementDesc(String ach, String desc)
+        {
+        LanguageRegistry.instance().addStringLocalization("achievement." + ach + ".desc", "en_US", desc);
         }
 
 }
