@@ -52,13 +52,18 @@ public class GuiProgramBot extends GuiScreen {
     private static final char dn = '\u25BC';
     private static final char lf = '\u25C0';
     private static final char rg = '\u25B6';
+    
+    int x = 0;
+    int y = 0;
 	
     public GuiProgramBot (EntityPlayer player,
     		TileEntityCreeperBot tileEntity) {
-        super.initGui();
+    	 super.initGui();
        
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
+
+        
         this.tileEntity = tileEntity;
             //the container is instanciated and passed to the superclass for handling
            //super(new ContainerTiny(inventoryPlayer, tileEntity));
@@ -153,13 +158,17 @@ public class GuiProgramBot extends GuiScreen {
     @Override
     public void initGui() {
            
+	        int x = (width - xSize) / 2;
+	        int y = (height - ySize) / 2;
+	        
+        
             //id, x, y, width, height, text
-            buttonList.add(new GuiButton(1, 170, 60, 20, 20, Character.toString(up)));
-            buttonList.add(new GuiButton(2, 170, 80, 20, 20, Character.toString(dn)));
-            buttonList.add(new GuiButton(3, 150, 70, 20, 20, Character.toString(lf)));
-            buttonList.add(new GuiButton(4, 190, 70, 20, 20, Character.toString(rg)));
+            buttonList.add(new GuiButton(1, x+30, y+20, 20, 20, Character.toString(up)));
+            buttonList.add(new GuiButton(2, x+30, y+40, 20, 20, Character.toString(dn)));
+            buttonList.add(new GuiButton(3, x+10, y+30, 20, 20, Character.toString(lf)));
+            buttonList.add(new GuiButton(4, x+50, y+30, 20, 20, Character.toString(rg)));
             
-            buttonList.add(new GuiButton(100, 230, 70, 30, 20, "GO!"));
+            buttonList.add(new GuiButton(100, x+90, y+30, 30, 20, "GO!"));
     }
 
     protected void actionPerformed(GuiButton guibutton) {
