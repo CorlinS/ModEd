@@ -31,13 +31,9 @@ public class BlockCreeperBot extends Block implements ITileEntityProvider{
 		setCreativeTab(CreativeTabs.tabMisc);
 		setTextureName("moded:creeper_bot");
 	}
-	
+
 	public void breakBlock(World world, int x, int y, int z, int i, int j) {
 		world.removeBlockTileEntity(x, y, z);
-	}
-	
-	private void moveForward(TileEntity tileEntity, int spaces) {
-		((TileEntityCreeperBot)tileEntity).move(spaces);
 	}
 
 	@Override
@@ -50,70 +46,67 @@ public class BlockCreeperBot extends Block implements ITileEntityProvider{
 		//code to open gui explained later
 		player.openGui(ModEd.instance, 0, world, x, y, z);
 
-//		((TileEntityCreeperBot)tileEntity).commands.add(1);
-//		((TileEntityCreeperBot)tileEntity).commands.add(1);
-//		((TileEntityCreeperBot)tileEntity).commands.add(1);
-//		((TileEntityCreeperBot)tileEntity).commands.add(1);
-//		
-//		((TileEntityCreeperBot)tileEntity).runCommand();
-		
 		return true;
 	}
-	
+
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entityliving, ItemStack itemStack)
-    {
-        super.onBlockPlacedBy(world, i, j, k, entityliving, itemStack);
-        int l = MathHelper.floor_double((double)((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
-        byte byte0;
-        switch (l)
-        {
-            case 1:
-                byte0 = 4;
-                break;
+	{
+		super.onBlockPlacedBy(world, i, j, k, entityliving, itemStack);
 
-            case 2:
-                byte0 = 2;
-                break;
+		int l = MathHelper.floor_double((double)((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
-            case 3:
-                byte0 = 5;
-                break;
+		// The direction for initial block facing
+		byte byte0;
 
-            default:
-                byte0 = 3;
-                break;
-        }
-        setDirection(world, i, j, k, byte0);
-    }
+		switch (l)
+		{
+		case 1:
+			byte0 = 4;
+			break;
+
+		case 2:
+			byte0 = 2;
+			break;
+
+		case 3:
+			byte0 = 5;
+			break;
+
+		default:
+			byte0 = 3;
+			break;
+		}
+		setDirection(world, i, j, k, byte0);
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new TileEntityCreeperBot();
 	}
-	
+
 
 	private void setDirection(World world, int i, int j, int k, int l)
-    {
-        TileEntity tileentity = world.getBlockTileEntity(i, j, k);
-        if (tileentity != null && (tileentity instanceof TileEntityCreeperBot))
-        {
-            TileEntityCreeperBot tileentitycreeperbot = (TileEntityCreeperBot)tileentity;
-            tileentitycreeperbot.setDir(l);
-            world.setBlockMetadataWithNotify(i, j, k, tileentitycreeperbot.getDirection(), 0);
-            
-        }
-    }
+	{
+		TileEntity tileentity = world.getBlockTileEntity(i, j, k);
+		if (tileentity != null && (tileentity instanceof TileEntityCreeperBot))
+		{
+			TileEntityCreeperBot tileentitycreeperbot = (TileEntityCreeperBot)tileentity;
+			tileentitycreeperbot.setDir(l);
+			world.setBlockMetadataWithNotify(i, j, k, tileentitycreeperbot.getDirection(), 0);
 
-     // This will tell minecraft not to render any side of our cube.
-     public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l) {
-	return false;
-     }
-    
-    // And this tell it that you can see through this block, and neighbor blocks
-     // should be rendered.
-     public boolean isOpaqueCube() {
-	return false;
-     }
+		}
+	}
+
+	// This will tell minecraft not to render any side of our cube.
+	public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l) {
+		return false;
+	}
+
+	// And this tell it that you can see through this block, and neighbor blocks
+	// should be rendered.
+	public boolean isOpaqueCube() {
+		return false;
+	}
 
 }

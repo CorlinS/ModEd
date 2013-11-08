@@ -24,6 +24,7 @@ import net.minecraft.entity.monster.*;
 public class TileEntityCreeperBot extends TileEntity {
 
 	private boolean moved = false;
+	private int fallDistance = 0;
 	public List<Integer> commands;
 	private int direction;
 	private static final ScheduledExecutorService worker = 
@@ -57,16 +58,19 @@ public class TileEntityCreeperBot extends TileEntity {
 						System.out.println("running command: " + command);
 						switch (command) {
 							case 1:
-								move(1);
+								move(true);
 								break;
 							case 2:
-								move(-1);
+								move(false);
 								break;
 							case 3:
 								turnRight();
 								break;
 							case 4:
 								turnLeft();
+								break;
+							case 5:
+								fall();
 								break;
 						}
 				    }
@@ -132,19 +136,20 @@ public class TileEntityCreeperBot extends TileEntity {
 		this.runCommand();
 	}
 	
-	public boolean move(int i)
+	public boolean move(boolean forward)
 	{
-		System.out.println("moving " + i);
+		System.out.println("moving");
 		int j = xCoord;
 		int k = yCoord;
 		int l = zCoord;
-		int i1 = xCoord + i * Facing.offsetsXForSide[direction];
-		int j1 = yCoord + i * Facing.offsetsYForSide[direction];
-		int k1 = zCoord + i * Facing.offsetsZForSide[direction];
-//		if (!canPlaceInBlock(j1))
-//		{
-//			return false;
-//		}
+		
+		int magnitude = forward ? 1 : -1;
+		fallDistance = 0;
+		
+		int i1 = xCoord + magnitude * Facing.offsetsXForSide[direction];
+		int j1 = yCoord + magnitude * Facing.offsetsYForSide[direction];
+		int k1 = zCoord + magnitude * Facing.offsetsZForSide[direction];
+
 		int l1 = worldObj.getBlockId(i1, j1, k1);
 		if (l1 != 0 && l1 != Block.waterStill.blockID && l1 != Block.waterMoving.blockID && l1 != Block.lavaStill.blockID && l1 != Block.lavaMoving.blockID && l1 != Block.fire.blockID && l1 != Block.snow.blockID)
 		{
@@ -163,6 +168,7 @@ public class TileEntityCreeperBot extends TileEntity {
 				return false;
 			}
 		}
+		
 		AxisAlignedBB axisalignedbb = ModEd.blockCreeperBot.getCollisionBoundingBoxFromPool(worldObj, i1, j1, k1);
 		if (axisalignedbb != null && !worldObj.checkNoEntityCollision(axisalignedbb))
 		{
@@ -170,16 +176,26 @@ public class TileEntityCreeperBot extends TileEntity {
 			splode();
 			return false;
 		}
+		
 		moved = true;
 		World world = worldObj;
 		world.setBlock(j, k, l, 0);
-//		int i2 = ((clientState.dir - 2 & 3) << 2) + (clientState.subType & 3);
+
+		// TODO: we still have no effin' clue what "3" means here.
 		world.setBlock(i1, j1, k1, ModEd.blockCreeperBot.blockID, getDirection(), 3);
+		
 		TileEntity tileentity = world.getBlockTileEntity(i1, j1, k1);
 		if (tileentity != null && (tileentity instanceof TileEntityCreeperBot))
 		{
 			TileEntityCreeperBot tileentitycreeperbot = (TileEntityCreeperBot)tileentity;
 			tileentitycreeperbot.transferStateFrom(this);
+			
+			// If the block below this new position is empty, add a fall into the command chain
+			if (world.getBlockId(i1, j1 - 1, k1) == 0) {
+				tileentitycreeperbot.commands.add(0,5);
+			}
+			
+			// Run the next command
 			tileentitycreeperbot.runCommand();
 			//tileentitycreeperbot.startAnimation(0);
 			//tileentitycreeperbot.updateAnimation();
@@ -187,6 +203,59 @@ public class TileEntityCreeperBot extends TileEntity {
 		world.notifyBlockChange(j, k, l, 0);
 		world.notifyBlockChange(i1, j1, k1, ModEd.blockCreeperBot.blockID);
 		return true;
+	}
+	
+	public void fall() {
+		int j = xCoord;
+		int k = yCoord;
+		int l = zCoord;
+		
+		int i1 = xCoord;
+		int j1 = yCoord - 1;
+		int k1 = zCoord;
+
+		fallDistance++;
+		
+		int l1 = worldObj.getBlockId(i1, j1, k1);
+		
+		AxisAlignedBB axisalignedbb = ModEd.blockCreeperBot.getCollisionBoundingBoxFromPool(worldObj, i1, j1, k1);
+		if (axisalignedbb != null && !worldObj.checkNoEntityCollision(axisalignedbb))
+		{
+			//We hit something! EXPLOOOODDDE!
+			splode();
+			return;
+		}
+		
+		moved = true;
+		World world = worldObj;
+		world.setBlock(j, k, l, 0);
+
+		// TODO: we still have no effin' clue what "3" means here.
+		world.setBlock(i1, j1, k1, ModEd.blockCreeperBot.blockID, getDirection(), 3);
+		
+		TileEntity tileentity = world.getBlockTileEntity(i1, j1, k1);
+		if (tileentity != null && (tileentity instanceof TileEntityCreeperBot))
+		{
+			TileEntityCreeperBot tileentitycreeperbot = (TileEntityCreeperBot)tileentity;
+			tileentitycreeperbot.transferStateFrom(this);
+			
+			// If the block below this new position is empty, add a fall into the command chain
+			if (world.getBlockId(i1, j1 - 1, k1) == 0) {
+				tileentitycreeperbot.commands.add(0,5);
+			} else if (fallDistance > 2) {
+				splode();
+				
+				return;
+			}
+			
+			// Run the next command
+			tileentitycreeperbot.runCommand();
+			//tileentitycreeperbot.startAnimation(0);
+			//tileentitycreeperbot.updateAnimation();
+		}
+		world.notifyBlockChange(j, k, l, 0);
+		world.notifyBlockChange(i1, j1, k1, ModEd.blockCreeperBot.blockID);
+		
 	}
 
 	@Override
@@ -227,6 +296,7 @@ public class TileEntityCreeperBot extends TileEntity {
         //clientState = tileentitycreeperbot.clientState;
         direction  = tileentitycreeperbot.direction;
         moved = false;
+        fallDistance = tileentitycreeperbot.fallDistance;
     }
 
 	@Override
